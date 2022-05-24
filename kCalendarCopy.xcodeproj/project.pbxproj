@@ -7,19 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E5345A2283044BD00A6595D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5345A1283044BD00A6595D /* Extensions.swift */; };
+		3E918BA6280B8AA500AD0C41 /* EventsCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E918BA5280B8AA500AD0C41 /* EventsCalendarManager.swift */; };
+		3EB15D002826FF5500A89798 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 3EB15CFF2826FF5500A89798 /* FSCalendar */; };
+		3EB15D02282702BB00A89798 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB15D01282702BB00A89798 /* MainViewController.swift */; };
 		3ECFDF38278BCB6A00CBF172 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECFDF37278BCB6A00CBF172 /* AppDelegate.swift */; };
 		3ECFDF3A278BCB6A00CBF172 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECFDF39278BCB6A00CBF172 /* SceneDelegate.swift */; };
-		3ECFDF3C278BCB6A00CBF172 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECFDF3B278BCB6A00CBF172 /* ViewController.swift */; };
+		3ECFDF3C278BCB6A00CBF172 /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECFDF3B278BCB6A00CBF172 /* EventViewController.swift */; };
 		3ECFDF3F278BCB6A00CBF172 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ECFDF3D278BCB6A00CBF172 /* Main.storyboard */; };
 		3ECFDF41278BCB6C00CBF172 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ECFDF40278BCB6C00CBF172 /* Assets.xcassets */; };
 		3ECFDF44278BCB6C00CBF172 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ECFDF42278BCB6C00CBF172 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E5345A1283044BD00A6595D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3E918BA5280B8AA500AD0C41 /* EventsCalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsCalendarManager.swift; sourceTree = "<group>"; };
+		3EB15D01282702BB00A89798 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		3ECFDF34278BCB6A00CBF172 /* kCalendarCopy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kCalendarCopy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ECFDF37278BCB6A00CBF172 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3ECFDF39278BCB6A00CBF172 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3ECFDF3B278BCB6A00CBF172 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3ECFDF3B278BCB6A00CBF172 /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
 		3ECFDF3E278BCB6A00CBF172 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3ECFDF40278BCB6C00CBF172 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3ECFDF43278BCB6C00CBF172 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -31,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EB15D002826FF5500A89798 /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,7 +66,10 @@
 			children = (
 				3ECFDF37278BCB6A00CBF172 /* AppDelegate.swift */,
 				3ECFDF39278BCB6A00CBF172 /* SceneDelegate.swift */,
-				3ECFDF3B278BCB6A00CBF172 /* ViewController.swift */,
+				3EB15D01282702BB00A89798 /* MainViewController.swift */,
+				3ECFDF3B278BCB6A00CBF172 /* EventViewController.swift */,
+				3E918BA5280B8AA500AD0C41 /* EventsCalendarManager.swift */,
+				3E5345A1283044BD00A6595D /* Extensions.swift */,
 				3ECFDF3D278BCB6A00CBF172 /* Main.storyboard */,
 				3ECFDF40278BCB6C00CBF172 /* Assets.xcassets */,
 				3ECFDF42278BCB6C00CBF172 /* LaunchScreen.storyboard */,
@@ -83,6 +94,9 @@
 			dependencies = (
 			);
 			name = kCalendarCopy;
+			packageProductDependencies = (
+				3EB15CFF2826FF5500A89798 /* FSCalendar */,
+			);
 			productName = kCalendarCopy;
 			productReference = 3ECFDF34278BCB6A00CBF172 /* kCalendarCopy.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +125,9 @@
 				Base,
 			);
 			mainGroup = 3ECFDF2B278BCB6A00CBF172;
+			packageReferences = (
+				3EB15CFE2826FF5500A89798 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+			);
 			productRefGroup = 3ECFDF35278BCB6A00CBF172 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -138,9 +155,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3ECFDF3C278BCB6A00CBF172 /* ViewController.swift in Sources */,
+				3E918BA6280B8AA500AD0C41 /* EventsCalendarManager.swift in Sources */,
+				3E5345A2283044BD00A6595D /* Extensions.swift in Sources */,
+				3ECFDF3C278BCB6A00CBF172 /* EventViewController.swift in Sources */,
 				3ECFDF38278BCB6A00CBF172 /* AppDelegate.swift in Sources */,
 				3ECFDF3A278BCB6A00CBF172 /* SceneDelegate.swift in Sources */,
+				3EB15D02282702BB00A89798 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,9 +312,11 @@
 				DEVELOPMENT_TEAM = GP93S94LLX;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = kCalendarCopy/Info.plist;
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "Please allow kCalendarCopy access to your calendars";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -320,9 +342,11 @@
 				DEVELOPMENT_TEAM = GP93S94LLX;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = kCalendarCopy/Info.plist;
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "Please allow kCalendarCopy access to your calendars";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -360,6 +384,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3EB15CFE2826FF5500A89798 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3EB15CFF2826FF5500A89798 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3EB15CFE2826FF5500A89798 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3ECFDF2C278BCB6A00CBF172 /* Project object */;
 }
