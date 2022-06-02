@@ -14,6 +14,7 @@ enum CustomError: Error {
     case calendarAccessDeniedOrRestricted
     case eventNotAddedToCalendar
     case eventAlreadyExistsInCalendar
+    case eventNotDeletedFromCalendar
 }
 
 typealias EventsCalendarManagerResponse = (_ result: Result<Bool, CustomError>) -> Void
@@ -45,6 +46,15 @@ class EventsCalendarManager: NSObject {
     // Try to add an event to the calendar if authorized
     
     func addEventToCalendar(event: EKEvent, completion : @escaping EventsCalendarManagerResponse) {
+        
+        /*
+        eventStore.requestAccess(to: .event) { (granted, error) in
+            if (granted) && (error == nil) {
+                print("granted \(granted)")
+                print("error \(error)")
+            }
+        */
+                
         let authStatus = getAuthorizationStatus()
         switch authStatus {
         case .authorized:
@@ -83,7 +93,8 @@ class EventsCalendarManager: NSObject {
     }
     
     // Generate an event which will be then added to the calendar
-    
+    // *TODO* Understand when I would use this vs. just addEvent
+    // Used below...
     private func generateEvent(event: EKEvent) -> EKEvent {
         let newEvent = EKEvent(eventStore: eventStore)
         newEvent.calendar = event.calendar
@@ -98,12 +109,11 @@ class EventsCalendarManager: NSObject {
     }
     
     // Try to save an event to the calendar
-    
     private func addEvent(event: EKEvent, completion : @escaping EventsCalendarManagerResponse) {
-        let eventToAdd = generateEvent(event: event)
-        if !eventAlreadyExists(event: eventToAdd) {
+        // let eventToAdd = generateEvent(event: event)
+        if !eventAlreadyExists(event: event) {
             do {
-                try eventStore.save(eventToAdd, span: .thisEvent)
+                try eventStore.save(event, span: .thisEvent)
             } catch {
                 // Error while trying to create event in calendar
                 completion(.failure(.eventNotAddedToCalendar))
@@ -112,27 +122,53 @@ class EventsCalendarManager: NSObject {
         } else {
             completion(.failure(.eventAlreadyExistsInCalendar))
         }
-      
+    }
+    
+    // Try to toggle an event onto/off of the calendar
+    func toggleEvent(event: EKEvent, completion : @escaping EventsCalendarManagerResponse) {
+        if !eventAlreadyExists(event: event) {
+            do {
+                try eventStore.save(event, span: .thisEvent)
+            } catch { // Error while trying to create event in calendar
+                completion(.failure(.eventNotAddedToCalendar))
+            }
+            completion(.success(true))
+        } else {
+            deleteMatchingEvent(event: event, completion: completion)
+        }
     }
     
     // Check if the event was already added to the calendar
-    
     private func eventAlreadyExists(event eventToAdd: EKEvent) -> Bool {
-        print("Checking if it already exists.")
-        let predicate = eventStore.predicateForEvents(withStart: eventToAdd.startDate, end: eventToAdd.endDate, calendars: nil)
+        let predicate = eventStore.predicateForEvents(withStart: eventToAdd.startDate, end: eventToAdd.endDate, calendars: [eventToAdd.calendar])
         let existingEvents = eventStore.events(matching: predicate)
         
-        for i in 0...existingEvents.count {
-            print(existingEvents[i])
-        }
-        
+        // Note:  Matching date but not titles; need to complete title and times
         let eventAlreadyExists = existingEvents.contains { (event) -> Bool in
             return eventToAdd.title == event.title && event.startDate == eventToAdd.startDate && event.endDate == eventToAdd.endDate
         }
         return eventAlreadyExists
     }
     
-    // Show event kit ui to add event to calendar
+    // Delete all events that match eventToDelete
+    private func deleteMatchingEvent(event eventToDelete: EKEvent, completion : @escaping EventsCalendarManagerResponse) {
+        let predicate = eventStore.predicateForEvents(withStart: eventToDelete.startDate, end: eventToDelete.endDate, calendars: [eventToDelete.calendar])
+        let existingEvents = eventStore.events(matching: predicate)
+        
+        existingEvents.forEach {event in
+            if (eventToDelete.title == event.title && eventToDelete.startDate == event.startDate && eventToDelete.endDate == event.endDate) {
+                do {
+                    try eventStore.remove(event, span: .thisEvent, commit: true)
+                    completion(.success(true))
+                } catch  {
+                    print("Error trying to delete event")
+                    completion(.failure(.eventNotDeletedFromCalendar))
+                }
+            }
+        }
+    }
+    
+    // Show eventlit ui to add event to calendar
     
     func presentCalendarModalToAddEvent(event: EKEvent, completion : @escaping EventsCalendarManagerResponse) {
         let authStatus = getAuthorizationStatus()
@@ -161,7 +197,6 @@ class EventsCalendarManager: NSObject {
     }
     
     // Present edit event calendar modal
-    
     func presentEventCalendarDetailModal(event: EKEvent) {
         let event = generateEvent(event: event)
         let eventModalVC = EKEventEditViewController()
@@ -180,7 +215,6 @@ class EventsCalendarManager: NSObject {
             rootVC.present(eventModalVC, animated: true, completion: nil)
         }
     }
-
 }
 
 // EKEventEditViewDelegate

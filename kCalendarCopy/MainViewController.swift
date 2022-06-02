@@ -12,8 +12,10 @@ import FSCalendar
 
 class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelegateAppearance, EKCalendarChooserDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
-    enum CalendarTouchAction { case addremove, show }
+    enum CalendarTouchMode { case select, toggle}
 
+    let defaults = UserDefaults.standard
+    
     let calendarManager = EventsCalendarManager()
     var selectedCalendar : EKCalendar?
     var calendarArray = [EKCalendar?]()
@@ -29,13 +31,14 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
     var matchEventEnd = "20:00"
     
     var selectedCalendarRow = 0
-    var calendarTouchAction : CalendarTouchAction = .addremove
+    var calendarTouchMode : CalendarTouchMode = .select
+    var selectedDate = Date()
     
     var calendarView = FSCalendar()
     @IBOutlet weak var calendarArea: UIView!
     @IBOutlet weak var calendarTableView: UITableView!
     
-    @IBOutlet weak var selectOrDisplay: UISegmentedControl!
+    @IBOutlet weak var modeLabel: UILabel!
     
     @IBOutlet weak var matchEventTitle: UITextField!
     @IBOutlet weak var matchEventStartPicker: UIDatePicker!
@@ -63,9 +66,13 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
         calendarTableView.delegate = self
         calendarTableView.dataSource = self
         
-        // SegmentedControl
-        calendarTouchAction = .addremove
-        selectOrDisplay.setEnabled(true, forSegmentAt: 0)
+        // Calendar Mode
+        calendarTouchMode = .select
+        modeLabel.text = "In Select Mode"
+        modeLabel.backgroundColor = UIColor.systemBlue
+        modeLabel.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(modeLabelTouched(tapGestureRecognizer:)))
+        modeLabel.addGestureRecognizer(tapGesture)
 
         matchEventTitle.text = ""
         // matchEventStart.text = "12:00"
@@ -80,8 +87,31 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
         
         setupCalendarView()
         
+        // default defaults
         calendarArray.append(calendarManager.eventStore.defaultCalendarForNewEvents)
         calendarArray.append(calendarManager.eventStore.defaultCalendarForNewEvents)
+        calendarList = ["Choose Calendar 1", "Choose Calendar 2"]
+        calendarColor = [.gray, .gray]
+        calendarValid = [false, false]
+        
+        // Set selected calendars from defaults
+        let calendarIDArray = defaults.object(forKey:"calendarIDArray") as? [String] ?? [String]()
+        
+        // print("Loading defaults")
+        
+        if calendarIDArray.count > 0 && calendarIDArray[0] != "" {
+            calendarArray[0] = calendarManager.eventStore.calendar(withIdentifier: calendarIDArray[0])
+            calendarList[0] = calendarArray[0]!.title
+            calendarColor[0] = UIColor(cgColor: calendarArray[0]!.cgColor)
+            calendarValid[0] = true
+        }
+        if calendarIDArray.count > 1 && calendarIDArray[1] != "" {
+            calendarArray[1] = calendarManager.eventStore.calendar(withIdentifier: calendarIDArray[1])
+            calendarList[1] = calendarArray[1]!.title
+            calendarColor[1] = UIColor(cgColor: calendarArray[1]!.cgColor)
+            calendarValid[1] = true
+        }
+        // calendarTableView.reloadData()
         
         matchEventStartPicker.date = Date(time: matchEventStart)
         matchEventEndPicker.date = Date(time: matchEventEnd)
@@ -103,9 +133,22 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
         calendarView.calendarHeaderView.isHidden = false
         calendarView.calendarHeaderView.backgroundColor = UIColor.systemTeal
         // calendarView.headerHeight = 60.0
+        
+        calendarView.appearance.todayColor = nil // don't highlight today differently
+        // calendarView.appearance.selectionColor = nil // don't highlight selection differently
+        calendarView.appearance.selectionColor = UIColor.lightGray
+        calendarView.appearance.titleFont = .boldSystemFont(ofSize: 16)
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
+        return colorDate(date)
+    }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
+        return colorDate(date)
+    }
+    
+    func colorDate (_ date: Date) -> UIColor? {
         
         let onCal0 = eventDates[0].contains(date) && calendarValid[0]
         let onCal1 = eventDates[1].contains(date) && calendarValid[1]
@@ -120,9 +163,24 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
         case (false,false):
             return nil
         }
-
-        return nil //add your color for default
     }
+    
+    // Put a circular red border around today's date
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderDefaultColorFor date: Date) -> UIColor? {
+        if date.hasSameDate(Date()) {
+            return UIColor.red
+        }
+        return nil
+    }
+    
+    /* Not used; change today's date to red
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+        if date.hasSameDate(Date()) {
+            return UIColor.red
+        }
+        return nil
+    }
+    */
     
     /*
     func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -146,27 +204,52 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        selectedDate = date
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        print("date is selected \(formatter.string(from: date))")
+        // print("Date selected \(formatter.string(from: date))")
         
-        if calendarTouchAction == .show {
-            print("Showing Events")
+        if calendarTouchMode == .select {
             performSegue(withIdentifier: "selectedDate",sender: self)
-        } else if calendarTouchAction == .addremove {
-            print("Add/Remove Events")
+        } else if calendarTouchMode == .toggle {
+            copyEvent()
+            updateEventDates()
         }
     }
     
-    @IBAction func selectOrDisplayChanged(_ sender: Any) {
-        if selectOrDisplay.selectedSegmentIndex == 0 {
-            print("Add/Remove")
-            calendarTouchAction = .addremove
-        } else if selectOrDisplay.selectedSegmentIndex == 1 {
-            print("Show")
-            calendarTouchAction = .show
+    func copyEvent() {
+        let newEvent = EKEvent(eventStore: calendarManager.eventStore)
+        newEvent.calendar = calendarArray[1] // Second calendar
+        newEvent.title = matchEventTitle.text
+        newEvent.startDate = matchEventStartPicker.date
+        newEvent.endDate = matchEventEndPicker.date
+        
+        newEvent.startDate = Date(date: selectedDate, time: matchEventStartPicker.date)
+        newEvent.endDate = Date(date:selectedDate, time: matchEventEndPicker.date)
+
+        print(newEvent.startDate)
+        
+        calendarManager.toggleEvent(event: newEvent, completion: { (result) in
+            switch result {
+            case .success:
+              print("Success.")
+ //               print("Toggled " + newEvent.title + " on " + newEvent.calendar.title)
+            case .failure(let error):
+ //             print("Failure")
+                print(error)
+            }
+        })
+    }
+    
+    @objc func modeLabelTouched(tapGestureRecognizer: UITapGestureRecognizer) {
+        if calendarTouchMode == .select {
+            calendarTouchMode = .toggle
+            modeLabel.text = "In Event Add/Remove Mode"
+            modeLabel.backgroundColor = UIColor.red
         } else {
-            print("???")
+            calendarTouchMode = .select
+            modeLabel.text = "In Select Mode"
+            modeLabel.backgroundColor = UIColor.systemBlue
         }
     }
     
@@ -230,10 +313,13 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
     // *** SEGUE PROCESSING ***
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
-        print (segue.identifier)
-        
-        if let navigationController = segue.destination as? UINavigationController {
-            // destination.selectedLocation = selectedLocation
+        // print (segue.identifier)
+
+        if (segue.identifier == "selectedDate") {
+            if let destinationVC = segue.destination as? EventViewController {
+                destinationVC.mainVC = self
+                // destinationVC.calendarArray = self.calendarArray
+            }
         }
     }
     
@@ -257,19 +343,19 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
     func calendarChooserSelectionDidChange(_ calendarChooser: EKCalendarChooser) {
         selectedCalendar = calendarChooser.selectedCalendars.first!
         // print(calendarChooser.selectedCalendars)
-        print("Changed calendarChooser selection to " + selectedCalendar!.title)
+        // print("Changed calendarChooser selection to " + selectedCalendar!.title)
         calendarChooser.dismiss(animated: true, completion: nil)
         
-        print(selectedCalendarRow)
         calendarArray[selectedCalendarRow] = selectedCalendar
         calendarList[selectedCalendarRow] = selectedCalendar!.title
         calendarColor[selectedCalendarRow] = UIColor(cgColor: selectedCalendar!.cgColor)
         calendarValid[selectedCalendarRow] = true
         
+        defaults.set([calendarArray[0]?.calendarIdentifier,calendarArray[1]?.calendarIdentifier], forKey: "calendarIDArray")
+
         calendarTableView.reloadData()
         
         updateEventDates()
-        print(calendarColor)
     }
     
     func calendarChooserDidCancel(_ calendarChooser: EKCalendarChooser) {
@@ -296,16 +382,16 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
             return
         }
         
-        let calendarsToSearch : [EKCalendar] = [oneCalendar] // *TODO* Could I search both at the same time?
+        let calendarsToSearch : [EKCalendar] = [oneCalendar]
         
-        let predicate = calendarManager.eventStore.predicateForEvents(withStart: Date("2022-04-01"), end: Date("2022-08-31"), calendars: calendarsToSearch)
+        let predicate = calendarManager.eventStore.predicateForEvents(withStart: Date("2022-01-01"), end: Date("2022-12-31"), calendars: calendarsToSearch)
         let possibleEvents = calendarManager.eventStore.events(matching: predicate)
-        print("\(possibleEvents.count) possible events found.")
+        // print("\(possibleEvents.count) possible events found.")
         
         matchingEvents.removeAll()
         for e in possibleEvents {
             let eventTitle = e.title.replacingOccurrences(of: "\\", with: "")
-            // *TODO* Probably not the best way to deal with escape character from calendar entry
+            // *TODO* Above is probably not the best way to deal with escape character from calendar entry
             // print("Comparing calendar event '\(eventTitle)' with '\(String(describing: matchEventTitle.text!))'")
             if (matchEventTitleSwitch.isOn && matchEventTitleExactSwitch.isOn && eventTitle != matchEventTitle.text) { continue }
             if (matchEventTitleSwitch.isOn && !(eventTitle.lowercased().contains(matchEventTitle.text!.lowercased()))) { continue }
@@ -317,13 +403,12 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
             matchingEvents.append(e)
         }
         
-        print("\(matchingEvents.count) matching events found.")
-        
         eventDates[calendarIndex].removeAll()
         for event in matchingEvents {
             eventDates[calendarIndex].append(event.startDate.stripTime())
         }
-        print(eventDates)
+        // print("\(matchingEvents.count) matching events found.")
+        // print(eventDates)
     }
     
     @IBAction func matchEventTitleChange(_ sender: Any) {
@@ -336,6 +421,11 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
         updateEventDates()
     }
     @IBAction func matchEventTitleSwitchChange(_ sender: Any) {
+        if !matchEventTitleSwitch.isOn {
+            matchEventTitleExactSwitch.setOn(false, animated: true)
+            matchEventStartSwitch.setOn(false, animated: true)
+            matchEventEndSwitch.setOn(false, animated: true)
+        }
         updateEventDates()
     }
     @IBAction func matchEventStartSwitchChange(_ sender: Any) {

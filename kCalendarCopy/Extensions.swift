@@ -24,6 +24,21 @@ extension Date {
        self.init(timeInterval:0, since:date)
    }
     
+    init (date:Date, time:Date) {
+        let dateStringFormatter = DateFormatter()
+        dateStringFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateStringFormatter.string(from: date)
+        
+        let timeStringFormatter = DateFormatter()
+        timeStringFormatter.dateFormat = "HH:mm"
+        let timeString = timeStringFormatter.string(from: time)
+        
+        let dateAndTimeStringFormatter = DateFormatter()
+        dateAndTimeStringFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let date = dateAndTimeStringFormatter.date(from: dateString + " " + timeString)!
+        self.init(timeInterval:0, since:date)
+    }
+    
     func stripTime() -> Date {
         let components = Calendar.current.dateComponents([.year, .month, .day], from: self)
         let date = Calendar.current.date(from: components)
@@ -41,13 +56,32 @@ extension Date {
         let components1 = Calendar.current.dateComponents([.hour, .minute, .second], from: self)
         let components2 = Calendar.current.dateComponents([.hour, .minute, .second], from: date)
         let diff = Calendar.current.dateComponents([.hour, .minute, .second], from: components1, to: components2)
-        print(diff)
         
         if (diff.hour == 0 && diff.minute == 0 && diff.second == 0) {
             return true
         } else {
             return false
         }
+    }
+    
+    func hasSameDate(_ date : Date) -> Bool {
+        let components1 = Calendar.current.dateComponents([.year, .month, .day], from: self)
+        let components2 = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        let diff = Calendar.current.dateComponents([.year, .month, .day], from: components1, to: components2)
+        
+        if (diff.year == 0 && diff.month == 0 && diff.day == 0) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func formatDate(_ format : String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        // Don't know if next line is needed or what it does
+        // dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale
+        return dateFormatter.string(from: self)
     }
 }
 

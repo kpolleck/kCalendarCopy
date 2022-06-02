@@ -13,23 +13,193 @@ import UIKit
 import EventKitUI
 import EventKit
 
-class EventViewController: UIViewController, EKCalendarChooserDelegate {
+class EventViewController: UIViewController, EKCalendarChooserDelegate, UITableViewDelegate, UITableViewDataSource {
     // EKEventViewDelegate
+
+    @IBOutlet weak var eventsNavigationBar: UINavigationBar!
+    @IBOutlet weak var eventTableView: UITableView!
     
-    // let eventStore = EKEventStore() // now part of EventsCalendarManager
+    var mainVC = MainViewController()
+    
     let calendarManager = EventsCalendarManager()
-    var selectedCalendar : EKCalendar?
+    var selectedDayCal1Events : [EKEvent] = []
+    var selectedDayCal2Events : [EKEvent] = []
+    
+    var savedEvents : [String] = ["Deb Work","Deb","Ken"]
+    var savedEventStarts : [String] = ["6:30","12:00","12:00"]
+    var savedEventEnds : [String] = ["19:30","13:00","13:00"]
+    
+    // cell reuse id (cells that scroll out of view can be reused)
+    let cellReuseIdentifier = "eventCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedCalendar = calendarManager.eventStore.defaultCalendarForNewEvents
+        eventTableView.delegate = self
+        eventTableView.dataSource = self
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(showCalendarChooser))
+        // print(mainVC.calendarArray[0])
+        // print(mainVC.calendarArray[1])
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToCalendar))
+        getEventsFor(mainVC.selectedDate)
+        
+        // navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(showCalendarChooser))
+        // navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToCalendar))
+
     }
     
+    func getEventsFor(_ date : Date) {
+        // let calendarsToSearch : [EKCalendar] = [oneCalendar] // *TODO* Could I search both at the same time?
+        
+        /*
+        guard let calendars = mainVC.calendarArray else {
+            return
+        }
+         */
+        
+        // let calendarsToSearch : [EKCalendar] = [mainVC.calendarArray[0]!,mainVC.calendarArray[1]!]
+        
+        let startOfDay = date.stripTime()
+        let endOfDay = Calendar.current.date(byAdding: .second, value: 86399, to: startOfDay)!
+        
+        let calendar1 = [mainVC.calendarArray[0]!]
+        let predicate1 = calendarManager.eventStore.predicateForEvents(withStart: startOfDay, end: endOfDay, calendars: calendar1)
+        selectedDayCal1Events = calendarManager.eventStore.events(matching: predicate1)
+        // print("\(selectedDayCal1Events.count) possible events found.")
+        
+        let calendar2 = [mainVC.calendarArray[1]!]
+        let predicate2 = calendarManager.eventStore.predicateForEvents(withStart: startOfDay, end: endOfDay, calendars: calendar2)
+        selectedDayCal2Events = calendarManager.eventStore.events(matching: predicate2)
+        // print("\(selectedDayCal2Events.count) possible events found.")
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var rowCount = 0
+        if section == 0 {
+            rowCount = 3
+        } else if section == 1 {
+            rowCount = selectedDayCal1Events.count
+        } else if section == 2 {
+            rowCount = selectedDayCal2Events.count
+        }
+        return rowCount
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "Saved"
+        } else if section == 1 {
+            return mainVC.calendarArray[0]!.title
+        } else if section == 2 {
+            return mainVC.calendarArray[1]!.title
+        }
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let sectionHeaderView = UITableViewHeaderFooterView()
+        if section == 0 {
+            sectionHeaderView.contentView.backgroundColor = UIColor.lightGray
+        } else if section == 1 {
+            sectionHeaderView.contentView.backgroundColor = mainVC.calendarColor[0]
+        } else if section == 2 {
+            sectionHeaderView.contentView.backgroundColor = mainVC.calendarColor[1]
+        }
+        // sectionHeaderView.contentView.tintColor = UIColor.black
+        sectionHeaderView.textLabel?.textColor = UIColor.black
+        return sectionHeaderView
+    }
+    
+    /* willDisplayHeaderView doesn't seem to be needed
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        guard let view = view as? UITableViewHeaderFooterView else { return }
+
+        if section == 0 {
+            view.backgroundView?.backgroundColor = UIColor.blue
+        } else if section == 1 {
+            view.backgroundView?.backgroundColor = mainVC.calendarColor[0]
+        } else if section == 2 {
+            view.backgroundView?.backgroundColor = mainVC.calendarColor[1]
+        }
+        // view.textLabel?.backgroundColor = UIColor.clear // Doesn't seem to be needed
+        view.textLabel?.textColor = UIColor.black
+    }
+    */
+    
+    // create a cell for each table view row
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        // create a new cell if needed or reuse an old one
+        let cell:UITableViewCell = (eventTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as UITableViewCell?)!
+        
+        let section = indexPath.section
+        let row = indexPath.row
+        
+        if section == 0 {
+            cell.textLabel?.text = savedEvents[row]
+            cell.detailTextLabel?.text = savedEventStarts[row] + "-" + savedEventEnds[row]
+        } else if section == 1 {
+            cell.textLabel?.text = selectedDayCal1Events[row].title
+            cell.detailTextLabel?.text = selectedDayCal1Events[row].startDate.formatDate("HH:mm") + "-" + selectedDayCal1Events[row].endDate.formatDate("HH:mm")
+        } else if section == 2 {
+            cell.textLabel?.text = selectedDayCal2Events[row].title
+            cell.detailTextLabel?.text = selectedDayCal2Events[row].startDate.formatDate("HH:mm") + "-" + selectedDayCal2Events[row].endDate.formatDate("HH:mm")
+        }
+        return cell
+    }
+    
+    // method to run when table view cell is tapped
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let row = indexPath.row
+        var eventText = ""
+        var eventStart = ""
+        var eventEnd = ""
+        
+        if section == 0 {
+            eventText = savedEvents[row]
+            eventStart = savedEventStarts[row]
+            eventEnd = savedEventEnds[row]
+        } else if section == 1 {
+            eventText = selectedDayCal1Events[row].title
+            eventStart = selectedDayCal1Events[row].startDate.formatDate("HH:mm")
+            eventEnd = selectedDayCal1Events[row].endDate.formatDate("HH:mm")
+        } else if section == 2 {
+            eventText = selectedDayCal2Events[row].title
+            eventStart = selectedDayCal2Events[row].startDate.formatDate("HH:mm")
+            eventEnd = selectedDayCal2Events[row].endDate.formatDate("HH:mm")
+        }
+        
+        // *TODO* Allow for invalid start and end dates
+        print("You selected \(eventText)")
+        mainVC.matchEventTitle.text = eventText
+        mainVC.matchEventStart = eventStart
+        mainVC.matchEventEnd = eventEnd
+        mainVC.matchEventStartPicker.date = Date(time: eventStart)
+        mainVC.matchEventEndPicker.date = Date(time: eventEnd)
+        mainVC.matchEventTitleSwitch.setOn(true, animated: false)
+        mainVC.matchEventTitleExactSwitch.setOn(true, animated: false)
+        mainVC.matchEventStartSwitch.setOn(true, animated: false)
+        mainVC.matchEventEndSwitch.setOn(true, animated: false)
+        
+        mainVC.updateEventDates()
+        
+        dismiss(animated: true, completion: nil)
+        
+        // Removed next line; no longer using navigationVC
+        // self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func cancelPressed(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // Not currently used
     @objc func showCalendarChooser() {
         let vc = EKCalendarChooser(selectionStyle: .single, displayStyle: .allCalendars, entityType: .event, eventStore: calendarManager.eventStore)
         vc.showsDoneButton = false
@@ -41,10 +211,11 @@ class EventViewController: UIViewController, EKCalendarChooserDelegate {
         // Note:  Code continues while vc is being presented
     }
     
+    // Not currently used
     @objc func addToCalendar() {
         
         let newEvent = EKEvent(eventStore: calendarManager.eventStore)
-        newEvent.calendar = selectedCalendar
+        newEvent.calendar = calendarManager.eventStore.defaultCalendarForNewEvents // just to have something here for now
         newEvent.title = "Event Test"
         newEvent.startDate = Date()
         newEvent.endDate = Date()
@@ -67,21 +238,4 @@ class EventViewController: UIViewController, EKCalendarChooserDelegate {
      present(editEventVC, animated: true)
      */
     
-    func calendarChooserDidFinish(_ calendarChooser: EKCalendarChooser) {
-        // print("Dismissing calendarChooser")
-        // print(calendarChooser.selectedCalendars)
-        calendarChooser.dismiss(animated: true, completion: nil)
-    }
-    
-    func calendarChooserSelectionDidChange(_ calendarChooser: EKCalendarChooser) {
-        selectedCalendar = calendarChooser.selectedCalendars.first!
-        print(calendarChooser.selectedCalendars)
-        print("Changed calendarChooser selection")
-        calendarChooser.dismiss(animated: true, completion: nil)
-    }
-    
-    func calendarChooserDidCancel(_ calendarChooser: EKCalendarChooser) {
-        // print("Cancelling calendarChooser")
-        calendarChooser.dismiss(animated: true, completion: nil)
-    }
 }
