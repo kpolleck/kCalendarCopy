@@ -103,11 +103,11 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mkY-vG-BKn">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="409"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="327"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="QO4-od-P5J">
-                                        <rect key="frame" x="16" y="417" width="382" height="120"/>
+                                        <rect key="frame" x="16" y="335" width="382" height="120"/>
                                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="120" id="GgO-aq-dsd"/>
@@ -124,7 +124,7 @@
                                         </prototypes>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dGl-yg-dTb">
-                                        <rect key="frame" x="16" y="545" width="382" height="36"/>
+                                        <rect key="frame" x="16" y="463" width="382" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="36" id="NxK-Pn-vG8"/>
                                         </constraints>
@@ -139,84 +139,98 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Match" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkO-8g-qB9">
-                                        <rect key="frame" x="16" y="568" width="48" height="20.5"/>
+                                        <rect key="frame" x="16" y="515" width="48" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exact Match" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsG-C5-4CO">
-                                        <rect key="frame" x="317" y="568" width="81" height="20.5"/>
+                                        <rect key="frame" x="303.5" y="515" width="94.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="uBb-EB-cbe">
-                                        <rect key="frame" x="96" y="605" width="213" height="197"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="NFE-W2-Ob9" userLabel="Horizontal Stack View">
+                                        <rect key="frame" x="16" y="547" width="382" height="150"/>
                                         <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q2n-He-4LV">
-                                                <rect key="frame" x="0.0" y="0.0" width="213" height="14.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                                <connections>
-                                                    <action selector="matchEventTitleChange:" destination="sCh-Mv-Hqd" eventType="editingDidEnd" id="wcW-ls-xUh"/>
-                                                </connections>
-                                            </textField>
-                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="4Lm-Nn-CP1">
-                                                <rect key="frame" x="0.0" y="14.5" width="213" height="91"/>
-                                            </datePicker>
-                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="vLJ-ER-pmp">
-                                                <rect key="frame" x="0.0" y="105.5" width="213" height="91.5"/>
-                                            </datePicker>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="naF-kd-PcM" userLabel="Switch Stack View">
+                                                <rect key="frame" x="0.0" y="0.0" width="59.5" height="150"/>
+                                                <subviews>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fRP-LF-p2U">
+                                                        <rect key="frame" x="0.0" y="0.0" width="61.5" height="50"/>
+                                                        <connections>
+                                                            <action selector="matchEventTitleSwitchChange:" destination="sCh-Mv-Hqd" eventType="valueChanged" id="hzk-a3-1hx"/>
+                                                        </connections>
+                                                    </switch>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R1a-Hf-FSW">
+                                                        <rect key="frame" x="0.0" y="50" width="61.5" height="50"/>
+                                                        <connections>
+                                                            <action selector="matchEventStartSwitchChange:" destination="sCh-Mv-Hqd" eventType="valueChanged" id="I1L-na-LAW"/>
+                                                        </connections>
+                                                    </switch>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4OL-Bi-5S0">
+                                                        <rect key="frame" x="0.0" y="100" width="61.5" height="50"/>
+                                                        <connections>
+                                                            <action selector="matchEventEndSwitchChange:" destination="sCh-Mv-Hqd" eventType="valueChanged" id="dZg-ia-JvK"/>
+                                                        </connections>
+                                                    </switch>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="150" id="JJb-AS-l7g"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="uBb-EB-cbe" userLabel="Input Stack View">
+                                                <rect key="frame" x="67.5" y="0.0" width="200" height="150"/>
+                                                <subviews>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q2n-He-4LV">
+                                                        <rect key="frame" x="0.0" y="0.0" width="200" height="32"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="32" id="e5W-UD-qcZ"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <connections>
+                                                            <action selector="matchEventTitleChange:" destination="sCh-Mv-Hqd" eventType="editingDidEnd" id="wcW-ls-xUh"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="4Lm-Nn-CP1">
+                                                        <rect key="frame" x="0.0" y="32" width="200" height="70"/>
+                                                    </datePicker>
+                                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="oX3-Uh-smK">
+                                                        <rect key="frame" x="0.0" y="102" width="200" height="48"/>
+                                                    </datePicker>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="150" id="RCg-9W-NPm"/>
+                                                    <constraint firstAttribute="width" constant="200" id="vSa-x7-yzE"/>
+                                                </constraints>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="zS8-9g-B6a" userLabel="Right Stack View">
+                                                <rect key="frame" x="275.5" y="0.0" width="106.5" height="150"/>
+                                                <subviews>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2KT-B4-5O0">
+                                                        <rect key="frame" x="57.5" y="0.0" width="51" height="150"/>
+                                                        <connections>
+                                                            <action selector="matchEventTitleExactSwitchChange:" destination="sCh-Mv-Hqd" eventType="valueChanged" id="UVW-uc-9oD"/>
+                                                        </connections>
+                                                    </switch>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fRP-LF-p2U">
-                                        <rect key="frame" x="16" y="596.5" width="51" height="31"/>
-                                        <connections>
-                                            <action selector="matchEventTitleSwitchChange:" destination="sCh-Mv-Hqd" eventType="valueChanged" id="hzk-a3-1hx"/>
-                                        </connections>
-                                    </switch>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R1a-Hf-FSW">
-                                        <rect key="frame" x="16" y="649.5" width="51" height="31"/>
-                                        <connections>
-                                            <action selector="matchEventStartSwitchChange:" destination="sCh-Mv-Hqd" eventType="valueChanged" id="I1L-na-LAW"/>
-                                        </connections>
-                                    </switch>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4OL-Bi-5S0">
-                                        <rect key="frame" x="16" y="741" width="51" height="31"/>
-                                        <connections>
-                                            <action selector="matchEventEndSwitchChange:" destination="sCh-Mv-Hqd" eventType="valueChanged" id="dZg-ia-JvK"/>
-                                        </connections>
-                                    </switch>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2KT-B4-5O0">
-                                        <rect key="frame" x="349" y="596.5" width="51" height="31"/>
-                                        <connections>
-                                            <action selector="matchEventTitleExactSwitchChange:" destination="sCh-Mv-Hqd" eventType="valueChanged" id="UVW-uc-9oD"/>
-                                        </connections>
-                                    </switch>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="mkY-vG-BKn" firstAttribute="top" secondItem="Gf5-fs-Wau" secondAttribute="top" id="2kw-1q-AGz"/>
-                                    <constraint firstItem="2KT-B4-5O0" firstAttribute="centerY" secondItem="fRP-LF-p2U" secondAttribute="centerY" id="2vE-HQ-4SK"/>
-                                    <constraint firstAttribute="bottom" secondItem="mkY-vG-BKn" secondAttribute="bottom" multiplier="2" id="3a7-Jr-0mv"/>
-                                    <constraint firstAttribute="bottom" secondItem="uBb-EB-cbe" secondAttribute="bottom" constant="16" id="7Yl-E1-7AV"/>
-                                    <constraint firstItem="uBb-EB-cbe" firstAttribute="top" secondItem="dGl-yg-dTb" secondAttribute="bottom" constant="24" id="7ic-CE-fTO"/>
-                                    <constraint firstItem="4OL-Bi-5S0" firstAttribute="centerY" secondItem="vLJ-ER-pmp" secondAttribute="centerY" id="AUz-3S-yIj"/>
-                                    <constraint firstItem="fsG-C5-4CO" firstAttribute="leading" secondItem="uBb-EB-cbe" secondAttribute="trailing" constant="8" id="DGi-b9-eIF"/>
+                                    <constraint firstAttribute="bottom" secondItem="mkY-vG-BKn" secondAttribute="bottom" multiplier="2.5" id="3a7-Jr-0mv"/>
                                     <constraint firstAttribute="trailing" secondItem="mkY-vG-BKn" secondAttribute="trailing" id="FH5-Bz-d07"/>
+                                    <constraint firstItem="fsG-C5-4CO" firstAttribute="top" secondItem="dGl-yg-dTb" secondAttribute="bottom" constant="16" id="KfZ-Xb-Qaj"/>
                                     <constraint firstItem="dGl-yg-dTb" firstAttribute="top" secondItem="QO4-od-P5J" secondAttribute="bottom" constant="8" id="LH2-7z-J92"/>
-                                    <constraint firstItem="R1a-Hf-FSW" firstAttribute="centerY" secondItem="4Lm-Nn-CP1" secondAttribute="centerY" id="NXd-H8-xV5"/>
-                                    <constraint firstItem="Q2n-He-4LV" firstAttribute="centerY" secondItem="fRP-LF-p2U" secondAttribute="centerY" id="R1O-gy-gn5"/>
-                                    <constraint firstItem="2KT-B4-5O0" firstAttribute="top" secondItem="fsG-C5-4CO" secondAttribute="bottom" constant="8" id="RbY-6v-V2y"/>
-                                    <constraint firstItem="fRP-LF-p2U" firstAttribute="leading" secondItem="Gf5-fs-Wau" secondAttribute="leading" constant="16" id="XYN-dV-8ck"/>
-                                    <constraint firstItem="fRP-LF-p2U" firstAttribute="top" secondItem="gkO-8g-qB9" secondAttribute="bottom" constant="8" id="Y5g-ih-tTK"/>
+                                    <constraint firstItem="gkO-8g-qB9" firstAttribute="top" secondItem="dGl-yg-dTb" secondAttribute="bottom" constant="16" id="LtL-UF-VdH"/>
                                     <constraint firstItem="QO4-od-P5J" firstAttribute="top" secondItem="mkY-vG-BKn" secondAttribute="bottom" constant="8" id="ZJ2-Pa-q7M"/>
-                                    <constraint firstItem="2KT-B4-5O0" firstAttribute="leading" secondItem="4Lm-Nn-CP1" secondAttribute="trailing" constant="40" id="ZXJ-Bk-2O5"/>
-                                    <constraint firstItem="4OL-Bi-5S0" firstAttribute="leading" secondItem="Gf5-fs-Wau" secondAttribute="leading" constant="16" id="bjZ-ut-rCa"/>
                                     <constraint firstItem="mkY-vG-BKn" firstAttribute="leading" secondItem="Gf5-fs-Wau" secondAttribute="leading" id="giD-x2-Wot"/>
                                     <constraint firstItem="gkO-8g-qB9" firstAttribute="leading" secondItem="Gf5-fs-Wau" secondAttribute="leading" constant="16" id="mnW-VR-YnA"/>
-                                    <constraint firstItem="uBb-EB-cbe" firstAttribute="leading" secondItem="Gf5-fs-Wau" secondAttribute="leading" constant="96" id="quh-Y8-mHB"/>
-                                    <constraint firstItem="R1a-Hf-FSW" firstAttribute="leading" secondItem="Gf5-fs-Wau" secondAttribute="leading" constant="16" id="wb3-My-Mbp"/>
+                                    <constraint firstItem="NFE-W2-Ob9" firstAttribute="top" secondItem="dGl-yg-dTb" secondAttribute="bottom" constant="48" id="nVj-wK-htG"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -224,21 +238,22 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="V99-2v-ebD" firstAttribute="trailing" secondItem="fsG-C5-4CO" secondAttribute="trailing" constant="16" id="2bq-K7-cdK"/>
+                            <constraint firstItem="NFE-W2-Ob9" firstAttribute="leading" secondItem="V99-2v-ebD" secondAttribute="leading" constant="16" id="DTQ-ih-Zo9"/>
                             <constraint firstItem="V99-2v-ebD" firstAttribute="trailing" secondItem="dGl-yg-dTb" secondAttribute="trailing" constant="16" id="Flm-6x-70z"/>
                             <constraint firstItem="V99-2v-ebD" firstAttribute="bottom" secondItem="Gf5-fs-Wau" secondAttribute="bottom" id="J0y-dz-VAL"/>
+                            <constraint firstItem="V99-2v-ebD" firstAttribute="trailing" secondItem="NFE-W2-Ob9" secondAttribute="trailing" constant="16" id="Lqk-aD-ELt"/>
                             <constraint firstItem="Gf5-fs-Wau" firstAttribute="leading" secondItem="V99-2v-ebD" secondAttribute="leading" id="Txs-Xi-R9w"/>
                             <constraint firstItem="dGl-yg-dTb" firstAttribute="leading" secondItem="V99-2v-ebD" secondAttribute="leading" constant="16" id="U3S-hK-uIj"/>
                             <constraint firstItem="V99-2v-ebD" firstAttribute="trailing" secondItem="QO4-od-P5J" secondAttribute="trailing" constant="16" id="clp-tk-6El"/>
                             <constraint firstItem="QO4-od-P5J" firstAttribute="leading" secondItem="V99-2v-ebD" secondAttribute="leading" constant="16" id="eDu-GQ-uU3"/>
                             <constraint firstItem="V99-2v-ebD" firstAttribute="trailing" secondItem="Gf5-fs-Wau" secondAttribute="trailing" id="ip3-cx-F3f"/>
-                            <constraint firstItem="V99-2v-ebD" firstAttribute="trailing" secondItem="2KT-B4-5O0" secondAttribute="trailing" constant="16" id="s3Z-wp-BJJ"/>
                             <constraint firstItem="Gf5-fs-Wau" firstAttribute="top" secondItem="V99-2v-ebD" secondAttribute="top" id="vF4-AA-aoH"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="calendarArea" destination="mkY-vG-BKn" id="Jnw-L7-8EB"/>
                         <outlet property="calendarTableView" destination="QO4-od-P5J" id="9Cw-8X-JO1"/>
-                        <outlet property="matchEventEndPicker" destination="vLJ-ER-pmp" id="WWB-9R-bdb"/>
+                        <outlet property="matchEventEndPicker" destination="oX3-Uh-smK" id="SUo-0i-eQP"/>
                         <outlet property="matchEventEndSwitch" destination="4OL-Bi-5S0" id="bty-b0-Ve6"/>
                         <outlet property="matchEventStartPicker" destination="4Lm-Nn-CP1" id="23K-dU-Qgu"/>
                         <outlet property="matchEventStartSwitch" destination="R1a-Hf-FSW" id="zKI-27-jMI"/>

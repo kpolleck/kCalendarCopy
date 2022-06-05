@@ -24,14 +24,21 @@ class EventsCalendarManager: NSObject {
     var eventStore: EKEventStore!
     
     override init() {
+        super.init()
         eventStore = EKEventStore()
+
+        requestAccess() { (granted, error) in
+            if (granted) && (error == nil) {
+                print("Access granted")
+            } else {
+                print("error \(error)")
+            }
+        }
     }
     
     // Request access to the Calendar
-    
     private func requestAccess(completion: @escaping EKEventStoreRequestAccessCompletionHandler) {
         eventStore.requestAccess(to: EKEntityType.event) { (accessGranted, error) in
-            print("Access granted")
             completion(accessGranted, error)
         }
     }
@@ -46,14 +53,6 @@ class EventsCalendarManager: NSObject {
     // Try to add an event to the calendar if authorized
     
     func addEventToCalendar(event: EKEvent, completion : @escaping EventsCalendarManagerResponse) {
-        
-        /*
-        eventStore.requestAccess(to: .event) { (granted, error) in
-            if (granted) && (error == nil) {
-                print("granted \(granted)")
-                print("error \(error)")
-            }
-        */
                 
         let authStatus = getAuthorizationStatus()
         switch authStatus {

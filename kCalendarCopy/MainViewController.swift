@@ -78,8 +78,9 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
         // matchEventStart.text = "12:00"
         // matchEventEnd.text = "12:00"
         
-        matchEventStartPicker.contentHorizontalAlignment = .left
+        matchEventStartPicker.contentHorizontalAlignment = .leading
         matchEventEndPicker.contentHorizontalAlignment = .left
+
         matchEventTitleSwitch.setOn(true, animated: false)
         matchEventTitleExactSwitch.setOn(true, animated: false)
         matchEventStartSwitch.setOn(true, animated: false)
@@ -88,8 +89,10 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
         setupCalendarView()
         
         // default defaults
-        calendarArray.append(calendarManager.eventStore.defaultCalendarForNewEvents)
-        calendarArray.append(calendarManager.eventStore.defaultCalendarForNewEvents)
+        // calendarArray.append(calendarManager.eventStore.defaultCalendarForNewEvents)
+        // calendarArray.append(calendarManager.eventStore.defaultCalendarForNewEvents)
+        calendarArray.append(nil)
+        calendarArray.append(nil)
         calendarList = ["Choose Calendar 1", "Choose Calendar 2"]
         calendarColor = [.gray, .gray]
         calendarValid = [false, false]
@@ -138,6 +141,8 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
         // calendarView.appearance.selectionColor = nil // don't highlight selection differently
         calendarView.appearance.selectionColor = UIColor.lightGray
         calendarView.appearance.titleFont = .boldSystemFont(ofSize: 16)
+        
+        calendarView.appearance.titleTodayColor = nil
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
@@ -171,6 +176,20 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
             return UIColor.red
         }
         return nil
+    }
+    
+    /*
+    // Changes the CORNER radius of each date
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderRadiusFor date: Date) -> CGFloat {
+        if date.hasSameDate(Date()) {
+            return 1.0
+        }
+        return 0.6
+    }
+    */
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderSelectionColorFor date: Date) -> UIColor? {
+        return UIColor.blue
     }
     
     /* Not used; change today's date to red
@@ -351,7 +370,9 @@ class MainViewController: UIViewController, FSCalendarDelegate, FSCalendarDelega
         calendarColor[selectedCalendarRow] = UIColor(cgColor: selectedCalendar!.cgColor)
         calendarValid[selectedCalendarRow] = true
         
-        defaults.set([calendarArray[0]?.calendarIdentifier,calendarArray[1]?.calendarIdentifier], forKey: "calendarIDArray")
+        if calendarArray[0] != nil && calendarArray[1] != nil { // only save if both calendars have been chosen
+            defaults.set([calendarArray[0]?.calendarIdentifier,calendarArray[1]?.calendarIdentifier], forKey: "calendarIDArray")
+        }
 
         calendarTableView.reloadData()
         
