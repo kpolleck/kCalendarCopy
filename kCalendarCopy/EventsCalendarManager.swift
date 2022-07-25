@@ -9,6 +9,7 @@
 import UIKit
 import EventKit
 import EventKitUI
+import Contacts
 
 enum CustomError: Error {
     case calendarAccessDeniedOrRestricted
@@ -27,9 +28,20 @@ class EventsCalendarManager: NSObject {
         super.init()
         eventStore = EKEventStore()
 
+        // get access to calendar
         requestAccess() { (granted, error) in
             if (granted) && (error == nil) {
-                print("Access granted")
+                print("Calendar Access granted")
+            } else {
+                print("error \(error)")
+            }
+        }
+        
+        // get access to contacts -- not sure why needed (KP 07/24/2022)
+        let contactStore = CNContactStore()
+        contactStore.requestAccess(for: CNEntityType.contacts) { (accessGranted, error) in
+            if (accessGranted) && (error == nil) {
+                print("Contact Access granted")
             } else {
                 print("error \(error)")
             }
