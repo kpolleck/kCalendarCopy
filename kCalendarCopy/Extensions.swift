@@ -47,9 +47,26 @@ extension Date {
         
     func stripDate() -> Date {
         let components = Calendar.current.dateComponents([.hour, .minute, .second], from: self)
-        print(components)
         let date = Calendar.current.date(from: components)
         return date!
+    }
+    
+    func asString() -> String {
+        let dateAndTimeStringFormatter = DateFormatter()
+        dateAndTimeStringFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateAndTimeStringFormatter.string(from: self)
+    }
+    
+    func asDateString() -> String {
+        let dateAndTimeStringFormatter = DateFormatter()
+        dateAndTimeStringFormatter.dateFormat = "yyyy-MM-dd"
+        return dateAndTimeStringFormatter.string(from: self)
+    }
+    
+    func asTimeString() -> String {
+        let dateAndTimeStringFormatter = DateFormatter()
+        dateAndTimeStringFormatter.dateFormat = "HH:mm:ss"
+        return dateAndTimeStringFormatter.string(from: self)
     }
     
     func hasSameTime(_ date : Date) -> Bool {
@@ -76,8 +93,16 @@ extension Date {
         }
     }
     
-    func formatDate(_ format : String) -> String {
-        let dateFormatter = DateFormatter()
+    func startOfMonth() -> Date {
+        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self)))!
+    }
+    
+    func endOfMonth() -> Date {
+        return Calendar.current.date(byAdding: DateComponents(month: 1, second: -1), to: self.startOfMonth())!
+    }   
+
+func formatDate(_ format : String) -> String {
+    let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         // Don't know if next line is needed or what it does
         // dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale

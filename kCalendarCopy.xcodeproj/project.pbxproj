@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3E5345A2283044BD00A6595D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5345A1283044BD00A6595D /* Extensions.swift */; };
+		3E6919A22A341A20008E97B5 /* StatusHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6919A12A341A20008E97B5 /* StatusHistoryViewController.swift */; };
+		3E8466E62918956800D45A62 /* CalendarListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8466E52918956800D45A62 /* CalendarListTableView.swift */; };
+		3E8466E82918994200D45A62 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8466E72918994200D45A62 /* CalendarView.swift */; };
 		3E918BA6280B8AA500AD0C41 /* EventsCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E918BA5280B8AA500AD0C41 /* EventsCalendarManager.swift */; };
 		3EB15D002826FF5500A89798 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 3EB15CFF2826FF5500A89798 /* FSCalendar */; };
 		3EB15D02282702BB00A89798 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB15D01282702BB00A89798 /* MainViewController.swift */; };
@@ -17,10 +20,14 @@
 		3ECFDF3F278BCB6A00CBF172 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ECFDF3D278BCB6A00CBF172 /* Main.storyboard */; };
 		3ECFDF41278BCB6C00CBF172 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ECFDF40278BCB6C00CBF172 /* Assets.xcassets */; };
 		3ECFDF44278BCB6C00CBF172 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ECFDF42278BCB6C00CBF172 /* LaunchScreen.storyboard */; };
+		3ED4727E2A6DC74B001FC3FF /* CalendarListTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED4727D2A6DC74B001FC3FF /* CalendarListTableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3E5345A1283044BD00A6595D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3E6919A12A341A20008E97B5 /* StatusHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusHistoryViewController.swift; sourceTree = "<group>"; };
+		3E8466E52918956800D45A62 /* CalendarListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListTableView.swift; sourceTree = "<group>"; };
+		3E8466E72918994200D45A62 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		3E918BA5280B8AA500AD0C41 /* EventsCalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsCalendarManager.swift; sourceTree = "<group>"; };
 		3EB15D01282702BB00A89798 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		3ECFDF34278BCB6A00CBF172 /* kCalendarCopy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kCalendarCopy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,6 +38,7 @@
 		3ECFDF40278BCB6C00CBF172 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3ECFDF43278BCB6C00CBF172 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3ECFDF45278BCB6C00CBF172 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3ED4727D2A6DC74B001FC3FF /* CalendarListTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListTableCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,8 +75,12 @@
 				3ECFDF37278BCB6A00CBF172 /* AppDelegate.swift */,
 				3ECFDF39278BCB6A00CBF172 /* SceneDelegate.swift */,
 				3EB15D01282702BB00A89798 /* MainViewController.swift */,
+				3E8466E72918994200D45A62 /* CalendarView.swift */,
+				3E8466E52918956800D45A62 /* CalendarListTableView.swift */,
+				3ED4727D2A6DC74B001FC3FF /* CalendarListTableCell.swift */,
 				3ECFDF3B278BCB6A00CBF172 /* EventViewController.swift */,
 				3E918BA5280B8AA500AD0C41 /* EventsCalendarManager.swift */,
+				3E6919A12A341A20008E97B5 /* StatusHistoryViewController.swift */,
 				3E5345A1283044BD00A6595D /* Extensions.swift */,
 				3ECFDF3D278BCB6A00CBF172 /* Main.storyboard */,
 				3ECFDF40278BCB6C00CBF172 /* Assets.xcassets */,
@@ -155,9 +167,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED4727E2A6DC74B001FC3FF /* CalendarListTableCell.swift in Sources */,
 				3E918BA6280B8AA500AD0C41 /* EventsCalendarManager.swift in Sources */,
 				3E5345A2283044BD00A6595D /* Extensions.swift in Sources */,
 				3ECFDF3C278BCB6A00CBF172 /* EventViewController.swift in Sources */,
+				3E8466E82918994200D45A62 /* CalendarView.swift in Sources */,
+				3E8466E62918956800D45A62 /* CalendarListTableView.swift in Sources */,
+				3E6919A22A341A20008E97B5 /* StatusHistoryViewController.swift in Sources */,
 				3ECFDF38278BCB6A00CBF172 /* AppDelegate.swift in Sources */,
 				3ECFDF3A278BCB6A00CBF172 /* SceneDelegate.swift in Sources */,
 				3EB15D02282702BB00A89798 /* MainViewController.swift in Sources */,
@@ -318,8 +334,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -349,8 +364,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

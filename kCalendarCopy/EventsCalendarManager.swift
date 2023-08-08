@@ -4,6 +4,8 @@
 //
 //  Created by Ken Polleck on 4/16/22.
 //
+//  Handles calendar access and changing events on (stored, not displayed) calendar
+//
 //  Initially based on https://medium.com/@fede_nieto/manage-calendar-events-with-eventkit-and-eventkitui-with-swift-74e1ecbe2524
 //
 import UIKit
@@ -180,7 +182,7 @@ class EventsCalendarManager: NSObject {
     }
     
     // Show eventlit ui to add event to calendar
-    
+    /* KEP
     func presentCalendarModalToAddEvent(event: EKEvent, completion : @escaping EventsCalendarManagerResponse) {
         let authStatus = getAuthorizationStatus()
         switch authStatus {
@@ -235,4 +237,5 @@ extension EventsCalendarManager: EKEventEditViewDelegate {
     func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
         controller.dismiss(animated: true, completion: nil)
     }
+     */
 }

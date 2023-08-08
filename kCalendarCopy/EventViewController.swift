@@ -1,8 +1,10 @@
 //
-//  ViewController.swift
+//  EventViewController.swift
 //  kCalendarCopy
 //
 //  Created by Ken Polleck on 1/9/22.
+//
+//  Shows a table of possible calendar entries to fill the search fields
 //
 //  Based in part on:
 //  1) https://medium.com/@fede_nieto/manage-calendar-events-with-eventkit-and-eventkitui-with-swift-74e1ecbe2524
@@ -25,21 +27,15 @@ class EventViewController: UIViewController, EKCalendarChooserDelegate, UITableV
     var selectedDayCal1Events : [EKEvent] = []
     var selectedDayCal2Events : [EKEvent] = []
     
-    var savedEvents : [String] = ["Deb Work","Deb","Ken"]
-    var savedEventStarts : [String] = ["6:30","12:00","12:00"]
-    var savedEventEnds : [String] = ["19:30","13:00","13:00"]
+    var savedEvents : [String] = ["Deb Work"]
+    var savedEventStarts : [String] = ["6:30"]
+    var savedEventEnds : [String] = ["19:30"]
     
-    // cell reuse id (cells that scroll out of view can be reused)
-    let cellReuseIdentifier = "eventCell"
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         eventTableView.delegate = self
         eventTableView.dataSource = self
-        
-        // print(mainVC.calendarArray[0])
-        // print(mainVC.calendarArray[1])
         
         getEventsFor(mainVC.selectedDate)
         
@@ -65,12 +61,10 @@ class EventViewController: UIViewController, EKCalendarChooserDelegate, UITableV
         let calendar1 = [mainVC.calendarArray[0]!]
         let predicate1 = calendarManager.eventStore.predicateForEvents(withStart: startOfDay, end: endOfDay, calendars: calendar1)
         selectedDayCal1Events = calendarManager.eventStore.events(matching: predicate1)
-        // print("\(selectedDayCal1Events.count) possible events found.")
         
         let calendar2 = [mainVC.calendarArray[1]!]
         let predicate2 = calendarManager.eventStore.predicateForEvents(withStart: startOfDay, end: endOfDay, calendars: calendar2)
         selectedDayCal2Events = calendarManager.eventStore.events(matching: predicate2)
-        // print("\(selectedDayCal2Events.count) possible events found.")
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -80,7 +74,7 @@ class EventViewController: UIViewController, EKCalendarChooserDelegate, UITableV
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rowCount = 0
         if section == 0 {
-            rowCount = 3
+            rowCount = savedEvents.count
         } else if section == 1 {
             rowCount = selectedDayCal1Events.count
         } else if section == 2 {
@@ -135,7 +129,7 @@ class EventViewController: UIViewController, EKCalendarChooserDelegate, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // create a new cell if needed or reuse an old one
-        let cell:UITableViewCell = (eventTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as UITableViewCell?)!
+        let cell:UITableViewCell = (eventTableView.dequeueReusableCell(withIdentifier: "eventCell", for: indexPath) as UITableViewCell?)!
         
         let section = indexPath.section
         let row = indexPath.row
@@ -176,16 +170,12 @@ class EventViewController: UIViewController, EKCalendarChooserDelegate, UITableV
         }
         
         // *TODO* Allow for invalid start and end dates
-        print("You selected \(eventText)")
-        mainVC.matchEventTitle.text = eventText
-        mainVC.matchEventStart = eventStart
-        mainVC.matchEventEnd = eventEnd
-        mainVC.matchEventStartPicker.date = Date(time: eventStart)
-        mainVC.matchEventEndPicker.date = Date(time: eventEnd)
-        mainVC.matchEventTitleSwitch.setOn(true, animated: false)
-        mainVC.matchEventTitleExactSwitch.setOn(true, animated: false)
-        mainVC.matchEventStartSwitch.setOn(true, animated: false)
-        mainVC.matchEventEndSwitch.setOn(true, animated: false)
+        mainVC.updateStatus("You selected \(eventText)")
+        mainVC.searchField.text = eventText
+        mainVC.matchStartTime = eventStart
+        mainVC.matchEndTime = eventEnd
+        mainVC.startPicker.date = Date(time: eventStart)
+        mainVC.endPicker.date = Date(time: eventEnd)
         
         mainVC.updateEventDates()
         
@@ -223,7 +213,8 @@ class EventViewController: UIViewController, EKCalendarChooserDelegate, UITableV
         calendarManager.addEventToCalendar(event: newEvent, completion: { (result) in
             switch result {
             case .success:
-                print("Success.  Added" + newEvent.title + " to " + newEvent.calendar.title)
+                break
+                // print("Success.  Added" + newEvent.title + " to " + newEvent.calendar.title)
             case .failure(let error):
                 print("Failure")
                 print(error)
