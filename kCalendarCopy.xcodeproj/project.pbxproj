@@ -21,6 +21,7 @@
 		3ECFDF41278BCB6C00CBF172 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ECFDF40278BCB6C00CBF172 /* Assets.xcassets */; };
 		3ECFDF44278BCB6C00CBF172 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ECFDF42278BCB6C00CBF172 /* LaunchScreen.storyboard */; };
 		3ED4727E2A6DC74B001FC3FF /* CalendarListTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED4727D2A6DC74B001FC3FF /* CalendarListTableCell.swift */; };
+		3ED472802A81EB75001FC3FF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED4727F2A81EB74001FC3FF /* CalendarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		3ECFDF43278BCB6C00CBF172 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3ECFDF45278BCB6C00CBF172 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3ED4727D2A6DC74B001FC3FF /* CalendarListTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListTableCell.swift; sourceTree = "<group>"; };
+		3ED4727F2A81EB74001FC3FF /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 		3ECFDF36278BCB6A00CBF172 /* kCalendarCopy */ = {
 			isa = PBXGroup;
 			children = (
+				3ED4727F2A81EB74001FC3FF /* CalendarViewController.swift */,
 				3ECFDF37278BCB6A00CBF172 /* AppDelegate.swift */,
 				3ECFDF39278BCB6A00CBF172 /* SceneDelegate.swift */,
 				3EB15D01282702BB00A89798 /* MainViewController.swift */,
@@ -170,6 +173,7 @@
 				3ED4727E2A6DC74B001FC3FF /* CalendarListTableCell.swift in Sources */,
 				3E918BA6280B8AA500AD0C41 /* EventsCalendarManager.swift in Sources */,
 				3E5345A2283044BD00A6595D /* Extensions.swift in Sources */,
+				3ED472802A81EB75001FC3FF /* CalendarViewController.swift in Sources */,
 				3ECFDF3C278BCB6A00CBF172 /* EventViewController.swift in Sources */,
 				3E8466E82918994200D45A62 /* CalendarView.swift in Sources */,
 				3E8466E62918956800D45A62 /* CalendarListTableView.swift in Sources */,
