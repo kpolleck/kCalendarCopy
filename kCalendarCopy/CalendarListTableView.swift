@@ -107,8 +107,7 @@ extension MainViewController:  UITableViewDelegate, UITableViewDataSource, EKCal
             defaults.set([calendarArray[0]?.calendarIdentifier,calendarArray[1]?.calendarIdentifier], forKey: "calendarIDArray")
         }
         
-        updateEventDates()
-        setUIFeatures()
+        updateMainView()
     }
     
     func calendarChooserDidCancel(_ calendarChooser: EKCalendarChooser) {

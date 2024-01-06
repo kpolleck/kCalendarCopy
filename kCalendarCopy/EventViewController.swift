@@ -177,7 +177,7 @@ class EventViewController: UIViewController, EKCalendarChooserDelegate, UITableV
         mainVC.startPicker.date = Date(time: eventStart)
         mainVC.endPicker.date = Date(time: eventEnd)
         
-        mainVC.updateEventDates()
+        mainVC.updateMainView() // KP20240105a Update bottom section to show correct text for Sync mode
         
         dismiss(animated: true, completion: nil)
         

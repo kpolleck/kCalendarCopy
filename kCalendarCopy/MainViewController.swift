@@ -20,6 +20,9 @@ import FSCalendar
 // 6. Updates highlighted dates on calendar upon changes (to time or text)
 
 // class MainViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, EKCalendarChooserDelegate  {
+
+// Updates:
+// KP20240105a Update bottom section to show correct text for Sync mode
     
 class
 MainViewController: UIViewController, UITextFieldDelegate  {
@@ -39,7 +42,7 @@ MainViewController: UIViewController, UITextFieldDelegate  {
     
     // eventDates are the dates (date only; no time) of matching events for each calendar to display calendar
     var eventDates: [[Date]] = [[Date("2022-05-01")],[Date("2022-05-01")]] // just to have something in array
-    // eventStrings are the events' info concatentated together
+    // eventStrings are the events' info concatentated together (to be used to compare calendar events)
     var eventStrings: [[String]] = [[""],[""]]
     // eventsSynced are flags which show if an event is already synced
     var eventsSynced: [[Bool]] = [[false],[false]]
@@ -182,7 +185,7 @@ MainViewController: UIViewController, UITextFieldDelegate  {
         
         self.view.endEditing(true)
         
-        updateEventDates()
+        updateCalendar()
     }
     
     @objc func cancelDatePicker() {
@@ -199,7 +202,7 @@ MainViewController: UIViewController, UITextFieldDelegate  {
                 destinationVC.mainVC = self
                 // destinationVC.calendarArray = self.calendarArray
             }
-            updateEventDates()
+            updateCalendar() // *TODO* I wonder if this is needed
         }
         if (segue.identifier == "showStatusHistorySegue") {
             if let destinationVC = segue.destination as? StatusHistoryViewController {
@@ -213,12 +216,17 @@ MainViewController: UIViewController, UITextFieldDelegate  {
         return true
     }
     
-    func updateEventDates() { // get dates from both calendars
-        updateLog("updateEventDates()")
+    func updateMainView() {
+        updateCalendar()
+        setUIFeatures()
+    }
+    
+    func updateCalendar() { // get dates from both calendars
+        updateLog("updateCalendar()")
         updateEventDates(0)
         updateEventDates(1)
         if mode == .sync {
-            markAlreadySynced()
+            flagAlreadySynced()
         }
         calendarTableView.reloadData()
         calendarView.reloadData()
@@ -274,12 +282,13 @@ MainViewController: UIViewController, UITextFieldDelegate  {
         calendarMatches[calendarIndex] = matchingEvents.count
     }
     
-    func markAlreadySynced() {
+    func flagAlreadySynced() {
         eventsSynced[0].removeAll()
         eventsSynced[1].removeAll()
         eventsSyncedCount = 0
         
-        // Create parallel "eventsSynced" arrays
+        // Create "eventsSynced" arrays which are boolean flags that identify matching eventStrings
+        // *TODO* Probably would be better to use some sort of data structure containing the string and the flag
         for _ in eventStrings[0] {
             eventsSynced[0].append(false)
         }
@@ -301,17 +310,6 @@ MainViewController: UIViewController, UITextFieldDelegate  {
                 }
             }
         }
-    }
-    
-    @IBAction func modeChange(_ sender: Any) {
-        switch modeControl.selectedSegmentIndex {
-        case 0: mode = .search
-        case 1: mode = .toggle
-        case 2: mode = .sync
-        default: break
-        }
-        setUIFeatures()
-        updateEventDates()
     }
     
     func setUIFeatures() {
@@ -427,31 +425,6 @@ MainViewController: UIViewController, UITextFieldDelegate  {
         }
     }
     
-    @IBAction func searchFieldChange(_ sender: Any) {
-        updateEventDates()
-    }
-    @IBAction func matchStartChange(_ sender: Any) {
-        updateEventDates()
-    }
-    @IBAction func matchEndChange(_ sender: Any) {
-        updateEventDates()
-    }
-    @IBAction func matchStartSwitchChange(_ sender: Any) {
-        updateEventDates()
-    }
-    @IBAction func matchEndSwitchChange(_ sender: Any) {
-        updateEventDates()
-    }
-    @IBAction func syncButtonPressed(_ sender: Any) {
-        let otherCalendar = 1-actOnCalendar
-        if calendarMatches[otherCalendar]-eventsSyncedCount <= 0 {
-            updateStatus("Sync button pressed, but nothing to do!")
-        } else {
-            syncCalendars(from: otherCalendar, to: actOnCalendar)
-        }
-        updateEventDates()
-    }
-    
     func syncCalendars(from fromCalendar: Int, to toCalendar: Int) {
         if eventDates[fromCalendar].count == 0 {
             updateStatus("Something went wrong...no dates to sync.")
@@ -464,6 +437,40 @@ MainViewController: UIViewController, UITextFieldDelegate  {
                 }
             }
         }
+    }
+    
+    @IBAction func modeChange(_ sender: Any) {
+        switch modeControl.selectedSegmentIndex {
+        case 0: mode = .search
+        case 1: mode = .toggle
+        case 2: mode = .sync
+        default: break
+        }
+        updateMainView()
+    }
+    @IBAction func searchFieldChange(_ sender: Any) {
+        updateCalendar()
+    }
+    @IBAction func matchStartChange(_ sender: Any) {
+        updateCalendar()
+    }
+    @IBAction func matchEndChange(_ sender: Any) {
+        updateCalendar()
+    }
+    @IBAction func matchStartSwitchChange(_ sender: Any) {
+        updateCalendar()
+    }
+    @IBAction func matchEndSwitchChange(_ sender: Any) {
+        updateCalendar()
+    }
+    @IBAction func syncButtonPressed(_ sender: Any) {
+        let otherCalendar = 1-actOnCalendar
+        if calendarMatches[otherCalendar]-eventsSyncedCount <= 0 {
+            updateStatus("Sync button pressed, but nothing to do!")
+        } else {
+            syncCalendars(from: otherCalendar, to: actOnCalendar)
+        }
+        updateMainView()
     }
     
     @objc func showStatusHistory(tapGestureRecognizer: UITapGestureRecognizer) {

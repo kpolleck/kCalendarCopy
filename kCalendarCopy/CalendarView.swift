@@ -37,8 +37,7 @@ extension MainViewController:  FSCalendarDelegate, FSCalendarDelegateAppearance 
         monthName = DateFormatter().monthSymbols[month - 1].capitalized
         
         updateStatus("Now displaying \(monthName)")
-        updateEventDates()
-        setUIFeatures()
+        updateMainView()
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
@@ -127,7 +126,7 @@ extension MainViewController:  FSCalendarDelegate, FSCalendarDelegateAppearance 
 
         if actOnCalendar != -1 && mode == .toggle {
             toggleEventOnCalendar(date)
-            updateEventDates()
+            updateMainView()
         } else {
             performSegue(withIdentifier: "clickedOnDate",sender: self)
         }
